@@ -6,29 +6,26 @@ using System.Windows;
 
 namespace SwissKit.Subprograms.AddToStart
 {
-    internal class AddToStartSubprogram : SubprogramBase
+    internal sealed class AddToStartSubprogram : ISubprogram
     {
-        public AddToStartSubprogram() 
-            : base("Add to Start", "Creates application shortcut in Start folder, making it discoverable through search bar")
+        public void Run()
         {
-        }
-
-        protected override void LaunchSubprogram()
-        {
-            if (GetApplicationPath(out string applicationPath))
+            if (GetApplicationPath(out string targetPath))
             {
-
+                var appName = Path.GetFileNameWithoutExtension(targetPath);
                 // Resolves to "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
                 var startProgramsPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs);
 
-                if (Exists(startProgramsPath, applicationPath))
+                var shortcutFullPath = GetShortcutFullPath(startProgramsPath, appName);
+
+                if (System.IO.File.Exists(shortcutFullPath))
                 {
-                    MessageBox.Show($"{Path.GetFileNameWithoutExtension(applicationPath)} already exists");
+                    MessageBox.Show($"{Path.GetFileNameWithoutExtension(targetPath)} already exists");
                 }
                 else
                 {
-                    CreateShortcut(startProgramsPath, applicationPath);
-                    MessageBox.Show($"Successfully added {Path.GetFileNameWithoutExtension(applicationPath)} to start menu search");
+                    CreateShortcut(shortcutFullPath, targetPath);
+                    MessageBox.Show($"Successfully added {Path.GetFileNameWithoutExtension(targetPath)} to start menu search");
                 }
             }
         }
@@ -52,19 +49,16 @@ namespace SwissKit.Subprograms.AddToStart
             return false;
         }
 
-        bool Exists(string shortcutFolderPath, string targetPath)
+        string GetShortcutFullPath(string path, string appName)
         {
-            var appName = Path.GetFileNameWithoutExtension(targetPath);
-            var shortcutLocation = Path.Combine(shortcutFolderPath, appName + ".lnk");
-            return System.IO.File.Exists(shortcutLocation);
+            return Path.Combine(path, appName + ".lnk");
         }
 
-        void CreateShortcut(string shortcutFolderPath, string targetPath)
+        void CreateShortcut(string shortcutFullPath, string targetPath)
         {
             var appName = Path.GetFileNameWithoutExtension(targetPath);
-            var shortcutLocation = Path.Combine(shortcutFolderPath, appName + ".lnk");
             var shell = new WshShell();
-            var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
+            var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutFullPath);
 
             shortcut.Description = $"Shortcut for {appName}";
             shortcut.TargetPath = targetPath;

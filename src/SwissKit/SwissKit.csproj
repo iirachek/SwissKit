@@ -65,7 +65,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Subprograms\AddToStart\AddToStartSubprogram.cs" />
-    <Compile Include="Subprograms\SubprogramBase.cs" />
+    <Compile Include="Subprograms\ISubprogram.cs" />
+    <Compile Include="Subprograms\NumberedCut\NumberedCutSubprogram.cs" />
+    <Compile Include="SubprogramViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,9 +109,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Subprograms\NumberedCut\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
