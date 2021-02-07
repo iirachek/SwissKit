@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissKit", "SwissKit\SwissKit.csproj", "{0D8757AE-B3B2-4B5E-8FB1-5772E1DF1765}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D8757AE-B3B2-4B5E-8FB1-5772E1DF1765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D8757AE-B3B2-4B5E-8FB1-5772E1DF1765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D8757AE-B3B2-4B5E-8FB1-5772E1DF1765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D8757AE-B3B2-4B5E-8FB1-5772E1DF1765}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1943F0F-5DF9-4343-A58E-0619D533EFA8}
+	EndGlobalSection
+EndGlobal
