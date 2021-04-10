@@ -12,7 +12,7 @@
                 <DataTemplate>
                     <Grid>
                         <Button 
-                            Content="{Binding Name}" 
+                            Content="{Binding Title}" 
                             ToolTip="{Binding Description}" 
                             ToolTipService.InitialShowDelay="0" 
                             Command="{Binding LaunchSubprogramCommand}"/>
