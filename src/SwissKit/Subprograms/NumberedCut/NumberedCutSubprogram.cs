@@ -1,37 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace SwissKit.Subprograms.NumberedCut
 {
     internal sealed class NumberedCutSubprogram : ISubprogram
     {
-        // Todo: Clean up and remove copy-paste
         public void Run()
         {
-            string sourceFolder; 
-            string destinationFolder;
-
-            FolderBrowserDialog folderBrowserDialogSource = new FolderBrowserDialog();
-            folderBrowserDialogSource.Description = "Source folder to cut from";
-            if (folderBrowserDialogSource.ShowDialog() == DialogResult.OK)
-                sourceFolder = folderBrowserDialogSource.SelectedPath;
-            else
+            if (!PromtFolderSelection("Select folder to cut files from", string.Empty, out string sourceFolder))
                 return;
 
-            FolderBrowserDialog folderBrowserDialogDestination = new FolderBrowserDialog();
-            folderBrowserDialogDestination.Description = "Destination folder to paste into";
-            if (folderBrowserDialogDestination.ShowDialog() == DialogResult.OK)
-                destinationFolder = folderBrowserDialogDestination.SelectedPath;
-            else
+            if (!PromtFolderSelection("Select folder to paste files into", string.Empty, out string destinationFolder))
                 return;
 
             var sourceFiles = Directory.GetFiles(sourceFolder);
-
             var startingIndex = GetMaxIndex(destinationFolder) + 1;
 
-            DoNumberedCut(sourceFiles, destinationFolder, startingIndex);
+            var msg = $"Confirm numbered cut of {sourceFiles.Length} files, starting from {startingIndex}" +
+                $"{Environment.NewLine}" +
+                $"{Environment.NewLine}from:{Environment.NewLine}{sourceFolder}" +
+                $"{Environment.NewLine}" +
+                $"{Environment.NewLine}to:{Environment.NewLine}{destinationFolder}";
+            if (MessageBox.Show(msg, null, MessageBoxButtons.OKCancel) != DialogResult.OK)
+                return;
 
-            MessageBox.Show($"Copied {sourceFolder.Length} from \"{sourceFolder}\" to \"{destinationFolder}\"");
+            PerformNumberedCut(sourceFiles, destinationFolder, startingIndex);
+            MessageBox.Show($"Copied {sourceFiles.Length} from \"{sourceFolder}\" to \"{destinationFolder}\"");
         }
 
         int GetMaxIndex(string directoryPath)
@@ -52,7 +48,7 @@ namespace SwissKit.Subprograms.NumberedCut
             return maxIndex;
         }
 
-        void DoNumberedCut(string[] filesToCut, string destinationPath, int startIndex)
+        void PerformNumberedCut(string[] filesToCut, string destinationPath, int startIndex)
         {
             foreach(var filePath in filesToCut)
             {
@@ -60,6 +56,27 @@ namespace SwissKit.Subprograms.NumberedCut
                 File.Copy(filePath, Path.Combine(destinationPath, $"{startIndex}{ext}"));
                 File.Delete(filePath);
                 startIndex++;
+            }
+        }
+
+        bool PromtFolderSelection(string title, string startingFolder, out string selectedFolder)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                Title = title,
+                IsFolderPicker = true,
+                InitialDirectory = startingFolder
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                selectedFolder = dialog.FileName;
+                return true;
+            }
+            else
+            {
+                selectedFolder = string.Empty;
+                return false;
             }
         }
     }
