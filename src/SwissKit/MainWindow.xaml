@@ -5,20 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SwissKit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="10">
-        <ItemsControl ItemsSource="{Binding Subprograms}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Button 
-                            Content="{Binding Title}" 
-                            ToolTip="{Binding Description}" 
-                            ToolTipService.InitialShowDelay="0" 
-                            Command="{Binding LaunchSubprogramCommand}"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        Title="Swiss Kit" 
+        Height="200" 
+        Width="250"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Height" Value="32" />
+                <Setter Property="Margin" Value="0,4,0,8" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <ScrollViewer 
+            VerticalScrollBarVisibility="Visible" 
+            HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl
+                Margin="10"
+                ItemsSource="{Binding Subprograms}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Button 
+                                Content="{Binding Title}" 
+                                ToolTip="{Binding Description}" 
+                                ToolTipService.InitialShowDelay="0" 
+                                Command="{Binding LaunchSubprogramCommand}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Window>
